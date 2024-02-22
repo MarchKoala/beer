@@ -14,70 +14,73 @@
       bottom: 0;
       width: 100%;
       background-color: #FFD700;
+      transform-origin: bottom;
     }
   </style>
 </head>
 <body>
-　　<button type="button" id="request-button">ボタン</button>
+  <button type="button" id="request-button">ボタン</button>
   <div id="container">
     <div id="beer"></div>
   </div>
 
   <script>
-	  // ビールの量を表す変数
-	let beerAmount = 100;
+    // ビールの量を表す変数
+    let beerAmount = 100;
 
-	// ビールの量を表示する要素
-	const beerElement = document.getElementById('beer');
+    // ビールの量を表示する要素
+    const beerElement = document.getElementById('beer');
 
-	// ビールの量を更新する関数
-	function updateBeer() {
-	  beerElement.style.height = beerAmount + '%';
-	}
-
-	// デバイスの傾きを処理する関数
-	function handleDeviceOrientation(event) {
-	  // デバイスの傾きを取得
-	  let tiltLR = event.gamma;
-
-	  // 傾きに応じてビールの量を減らす
-    if (tiltLR > 20) {
-      beerAmount -= 0.1;  // ここを修正
-    } else if (tiltLR < -20) {
-      beerAmount -= 0.1;  // ここを修正
+    // ビールの量を更新する関数
+    function updateBeer() {
+      beerElement.style.height = beerAmount + '%';
     }
 
-	  // ビールの量が0未満にならないようにする
-	  if (beerAmount < 0) {
-		beerAmount = 0;
-	  }
+    // デバイスの傾きを処理する関数
+    function handleDeviceOrientation(event) {
+      // デバイスの傾きを取得
+      let tiltLR = event.gamma;
 
-	  // ビールの量を更新
-	  updateBeer();
-	}
+      // 傾きに応じてビールの量を減らす
+      if (tiltLR > 20) {
+        beerAmount -= 0.1;
+      } else if (tiltLR < -20) {
+        beerAmount -= 0.1;
+      }
 
-	// 許可を求める関数
-	function requestOrientationPermission() {
-	  if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
-		DeviceOrientationEvent.requestPermission()
-		  .then(permissionState => {
-			if (permissionState === 'granted') {
-			  window.addEventListener('deviceorientation', handleDeviceOrientation);
-			}
-		  })
-		  .catch(console.error);
-	  } else {
-		// handle regular non iOS 13+ devices
-		window.addEventListener('deviceorientation', handleDeviceOrientation);
-	  }
-	}
+      // ビールの量が0未満にならないようにする
+      if (beerAmount < 0) {
+        beerAmount = 0;
+      }
 
-	// ユーザーがボタンをクリックしたときに許可を求める
-	document.querySelector("#request-button").addEventListener('click', requestOrientationPermission);
+      // ビールの量を更新
+      updateBeer();
 
-	// 初期状態のビールの量を設定
-	updateBeer();
+      // ビールの液面を傾ける
+      beerElement.style.transform = 'rotate(' + tiltLR + 'deg)';
+    }
+
+    // 許可を求める関数
+    function requestOrientationPermission() {
+      if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === 'granted') {
+              window.addEventListener('deviceorientation', handleDeviceOrientation);
+            }
+          })
+          .catch(console.error);
+      } else {
+        // handle regular non iOS 13+ devices
+        window.addEventListener('deviceorientation', handleDeviceOrientation);
+      }
+    }
+
+    // ユーザーがボタンをクリックしたときに許可を求める
+    document.querySelector("#request-button").addEventListener('click', requestOrientationPermission);
+
+    // 初期状態のビールの量を設定
+    updateBeer();
   </script>
-	
 </body>
 </html>
