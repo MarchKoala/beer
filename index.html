@@ -41,11 +41,11 @@
 	  let tiltLR = event.gamma;
 
 	  // 傾きに応じてビールの量を減らす
-	  if (tiltLR > 20) {
-		beerAmount -= 10;
-	  } else if (tiltLR < -20) {
-		beerAmount -= 10;
-	  }
+    if (tiltLR > 20) {
+      beerAmount -= 0.1;  // ここを修正
+    } else if (tiltLR < -20) {
+      beerAmount -= 0.1;  // ここを修正
+    }
 
 	  // ビールの量が0未満にならないようにする
 	  if (beerAmount < 0) {
