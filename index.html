@@ -12,7 +12,7 @@
     #beer {
       position: absolute;
       bottom: 0;
-      width: 100%;
+      width: 500%;
       background-color: #FFD700;
       transform-origin: top;
     }
@@ -57,7 +57,7 @@
       updateBeer();
 
       // ビールの液面を傾ける
-      beerElement.style.transform = 'rotate(' + -tiltLR + 'deg)';  // ここを修正
+      beerElement.style.transform = 'rotate(' + -tiltLR / 2 + 'deg)';  // ここを修正
     }
 
     // 許可を求める関数
